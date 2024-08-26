@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.API.Entities
 {
+#pragma warning disable CS1591
 
     [Table("Authors")]
     public class Author
@@ -22,4 +23,6 @@ namespace Library.API.Entities
 
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
+#pragma warning disable CS1591
+
 }

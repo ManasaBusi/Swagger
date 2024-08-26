@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Library.API.Models;
-using Library.API.Services; 
+using Library.API.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +17,9 @@ namespace Library.API.Controllers
             IAuthorRepository authorsRepository,
             IMapper mapper)
         {
-            _authorsRepository = authorsRepository 
+            _authorsRepository = authorsRepository
                 ?? throw new ArgumentNullException(nameof(authorsRepository));
-            _mapper = mapper 
+            _mapper = mapper
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -30,6 +30,11 @@ namespace Library.API.Controllers
             return Ok(_mapper.Map<IEnumerable<Author>>(authorsFromRepo));
         }
 
+        /// <summary>
+        /// Get an author by id
+        /// </summary>
+        /// <param name="authorId">The id of an author</param>
+        /// <returns>An author with id, firstname, lastname</returns>
         [HttpGet("{authorId}")]
         public async Task<ActionResult<Author>> GetAuthor(
             Guid authorId)
@@ -64,6 +69,24 @@ namespace Library.API.Controllers
             return Ok(_mapper.Map<Author>(authorFromRepo));
         }
 
+        /// <summary>
+        /// Partially update an author
+        /// </summary>
+        /// <param name="authorId">The id of the author you want to get</param>
+        /// <param name="patchDocument">The set of operations to apply to the author</param>
+        /// <returns>An action result of type Author</returns>
+        /// <remarks>
+        /// Sample Request (this request updates the author's first name):
+        /// 
+        /// PATCH /authors/Id \
+        /// [ \
+        ///     { \
+        ///         "op": "replace",\
+        ///         "from": "string",\
+        ///         "value": "string"\
+        ///     } \
+        /// ]
+        /// </remarks>
         [HttpPatch("{authorId}")]
         public async Task<ActionResult<Author>> UpdateAuthor(
             Guid authorId,
